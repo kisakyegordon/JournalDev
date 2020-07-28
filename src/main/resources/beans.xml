@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <aop:config>
+        <!--Aspect-->
+        <aop:aspect id="loggingAspect" ref="logging">
+            <!--Pointcut-->
+            <aop:pointcut id="UserAllMethods" expression="execution(* Model.User.*(..))"/>
+            <!--Advices-->
+            <aop:before pointcut-ref="UserAllMethods" method="beforeAdvice" />
+            <aop:after pointcut-ref="UserAllMethods" method="afterAdvice" />
+            <aop:after-returning pointcut-ref="UserAllMethods" returning="retVal" method="afterReturningAdvice" />
+            <aop:after-throwing pointcut-ref="UserAllMethods" throwing="ex" method="afterThrowingAdvice" />
+        </aop:aspect>
+    </aop:config>
+
+<!--    User Bean-->
+    <bean id="user" class="Model.User">
+        <property name="name" value="john" />
+        <property name="id" value="10" />
+    </bean>
+
+<!--    Definition for logging aspect-->
+    <bean id="logging" class="Aspects.Logging"/>
+
+</beans>
